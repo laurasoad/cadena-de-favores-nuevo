@@ -12,9 +12,14 @@ def create_app(repositories):
     def hello_world():
         return "...magic!"
 
-    @app.route("/api/info", methods=["GET"])
-    def info_get():
-        info = repositories["info"].get_info()
-        return object_to_json(info)
+    @app.route("/api/publications", methods=["GET"])
+    def pub_get_all():
+        pub_list = repositories["publications"].get_publications()
+        return object_to_json(pub_list)
+
+    @app.route("/api/publications/<id>", methods=["GET"])
+    def pub_get_by_id(id):
+        publication = repositories["publications"].get_publication_by_id(id)
+        return object_to_json(publication)
 
     return app

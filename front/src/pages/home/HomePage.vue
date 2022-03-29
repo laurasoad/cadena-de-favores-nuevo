@@ -1,7 +1,11 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="@/assets/img/logo.png" />
-    <h1>{{ info.app_name }}</h1>
+    <h1>{{ title }}</h1>
+    <h2>{{ publication_list }}</h2>
+    <button>Go to publication List</button>
+
+
   </div>
 </template>
 
@@ -11,7 +15,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      info: {}
+      title: "Welcome",
+      publication_list: []
     }
   },
   mounted() {
@@ -19,8 +24,10 @@ export default {
   },
   methods: {
     async loadData() {
-      const response = await fetch('http://localhost:5000/api/info')
-      this.info = await response.json()
+      const response = await fetch('http://localhost:5000/api/publications')
+      this.publication_list = await response.json()
+
+
     }
   }
 
