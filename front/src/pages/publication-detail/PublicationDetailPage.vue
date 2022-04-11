@@ -1,9 +1,13 @@
 <template>
   <h1>Publication detail:  {{ publication.id_pub }} </h1>
-  <ul class="publication-item">
-    <li>Type: {{ publication.first_name }}</li>
-    <li>Title: {{ publication.email }}</li>
-    <li>Description: {{ publication.phone }}</li>
+  <ul class="pub-item">
+    <li>Title: {{ publication.title }}</li>
+    <li>Type: {{ publication.publication_type }}</li>
+    <li>Categories: {{ publication.categories }}</li>
+    <li>Date: {{ publication.date }}</li>
+    <li>Location: {{ publication.location }}</li>
+    <li>Description: {{ publication.description }}</li>
+   
   </ul>
 </template>
 <script>
@@ -33,7 +37,7 @@ export default {
       }
      
       const response = await fetch(
-        `${config. API_PATH}/publications/${contactId}`,
+        `${config. API_PATH}/publications/${publicationId}`,
         settings);
 
       this.publication = await response.json();
@@ -45,13 +49,15 @@ export default {
 h1 {
   font-style: italic;
 }
-.contact-item {
+.pub-item {
   list-style: none;
   
   text-align: left;
   padding: 1em;
-  border: 2px solid dodgerblue;
+  border: 2px solid #04AA6D;
   border-radius: 1em;
   margin: 1em;
 }
+
+
 </style>

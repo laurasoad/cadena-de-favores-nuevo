@@ -1,11 +1,19 @@
-def main():
-    import sys
+import sys
 
-    sys.path.insert(0, "")
+sys.path.insert(0, "")
+
+
+def main():
 
     from src.domain.publication import Publication, PublicationRepository
+    from src.domain.user import User, UserRepository
 
     database_path = "data/database.db"
+
+    user_repository = UserRepository(database_path)
+
+    user_repository.save(User(id="user-1", name="Pepa"))
+    user_repository.save(User(id="user-2", name="Pepe"))
 
     pub_repository = PublicationRepository(database_path)
     pub_repository.save(

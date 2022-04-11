@@ -11,6 +11,17 @@ const routes = [
     name: 'About',
     component: () => import('@/pages/about/AboutPage.vue'),
   },
+  {
+    path: '/publications',
+    name: 'PublicationList',
+    component: () => import('@/pages/publications-list/PublicationsListPage.vue'),
+  },
+  {
+    path: "/publications/:id",
+    name: "PublicationDetail",
+    component: () => import('@/pages/publication-detail/PublicationDetailPage.vue'),
+  },
+
 ]
 
 const router = createRouter({

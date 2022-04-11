@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask
 from flask_cors import CORS
 
@@ -21,5 +22,10 @@ def create_app(repositories):
     def pub_get_by_id(id):
         publication = repositories["publications"].get_publication_by_id(id)
         return object_to_json(publication)
+
+    @app.route("/api/users", methods=["GET"])
+    def users_get_all():
+        users = repositories["users"].get_all()
+        return object_to_json(users)
 
     return app
