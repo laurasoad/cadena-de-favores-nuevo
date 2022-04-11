@@ -3,7 +3,7 @@
    <article class="pub-item">
       <p>Title: {{ publication.title }}</p>
       <p>Type: {{ publication.publication_type }}</p>
-      <p> >> {{ publication.categories }}</p>
+      <p> Categories: {{ publication.categories }}</p>
       <p>Location: {{ publication.location }}</p>
       <button>
          <router-link :to="`/publications/${publication.id_pub}`">Details</router-link>
@@ -66,9 +66,9 @@ button:hover {
 
   
 }
-
-router-link {
+a:link, a:visited, a:active {
     text-decoration:none;
-    color:#2c3e50
+      color:#2c3e50
 }
+
 </style>

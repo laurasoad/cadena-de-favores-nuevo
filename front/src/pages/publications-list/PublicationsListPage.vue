@@ -4,7 +4,6 @@
     <PublicationItem  v-for=" publication in publication_list" :key="publication.id_pub" 
     :publication="publication"/>
   </section>
-  <pre>{{publication_list}}</pre>
 </template>
 
 <script>
