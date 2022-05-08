@@ -9,6 +9,9 @@
 <script>
   // mejora: import { getPublications } from '@/services/api.js'
   import PublicationItem from "./PublicationItem.vue";
+  import { getPublications } from "@/services/api.js";
+
+
 
   export default {
      
@@ -19,23 +22,14 @@
     data() {
       return {
         publication_list: [],
-     
       }
     },
-
     mounted() {
-   
       this.loadData()
     },
-
     methods: {
       async loadData() {
-         
-        //mejora: getPublications en services/api.js
-        const response = await fetch('http://localhost:5000/api/publications')
-        this.publication_list = await response.json()
-        
-
+        this.publication_list = await getPublications();
       },
     }
 

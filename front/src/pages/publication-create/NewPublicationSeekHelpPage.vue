@@ -30,7 +30,9 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
-import config from "../../config";
+import { addPublication } from "@/services/api.js";
+
+
 
 
 export default {
@@ -66,14 +68,8 @@ export default {
             //Imprime el objeto entero
             console.log(this.pubInForm)
 
-            const settings = {
-              method: "POST",
-              body: JSON.stringify(this.pubInForm),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            };
-          fetch(`${config.API_PATH}/publications`, settings);
+            await addPublication(this.pubInForm);
+            
         
           alert("La publicación se ha guardado correctamente")
 
