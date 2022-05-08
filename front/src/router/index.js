@@ -32,7 +32,13 @@ const routes = [
     path: "/publications/seek",
     name: "NewPublicationSeekHelp",
     component: () => import('@/pages/publication-create/NewPublicationSeekHelpPage.vue'),
-  }
+  },
+
+  {
+    path: "/publications/:id/edit",
+    name: "EditPublicationPage",
+    component: () => import('@/pages/publication-edit/EditPublicationPage.vue'),
+  },
 
 
 

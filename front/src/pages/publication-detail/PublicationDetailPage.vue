@@ -3,23 +3,25 @@
   <ul class="pub-item">
     <li>Title: {{ publication.title }}</li>
     <li>Type: {{ publication.publication_type }}</li>
-    <li>Categories: {{ publication.categories }}</li>
-    <li>Date: {{ publication.date }}</li>
-    <li>Location: {{ publication.location }}</li>
     <li>Description: {{ publication.description }}</li>
-   
+    <li>Location: {{ publication.location }}</li>
+    <li>Date: {{ publication.date }}</li>
+    <li>Categories: {{ publication.categories }}</li>
+
   </ul>
+  <button >
+    <router-link :to="`/publications/${publication.id_pub}/edit`">Editar</router-link>
+    </button> 
 </template>
 <script>
 
-import config from "@/config.js"; 
+import { getPublicationById } from "@/services/api.js";
 
 export default {
   name: "PublicationDetail", 
   data() {
     return {
       publication: {},
-     
     };
   },
   mounted() {
@@ -27,21 +29,10 @@ export default {
   },
   methods: {
     async loadData() {
-   
       let publicationId = this.$route.params.id;
-      const settings = {
-        method: "GET",
-        headers: {
-        //  JSON application (aun sin user)
-        },
+      this.publication = await getPublicationById(publicationId)
       }
-     
-      const response = await fetch(
-        `${config. API_PATH}/publications/${publicationId}`,
-        settings);
-
-      this.publication = await response.json();
-      },
+      
   },
 };
 </script>

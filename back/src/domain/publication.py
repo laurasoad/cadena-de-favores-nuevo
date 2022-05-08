@@ -120,3 +120,20 @@ class PublicationRepository:
             },
         )
         conn.commit()
+
+    def edit_publication(self, publication):
+        sql = """UPDATE publications SET title= ?, description = ?, location= ?  WHERE id_pub = ?"""
+        conn = self.create_conn()
+        cursor = conn.cursor()
+
+        # publication.publication_type  NO publication.date, book.categories,
+        cursor.execute(
+            sql,
+            (
+                publication.title,
+                publication.description,
+                publication.location,
+                publication.id_pub,
+            ),
+        )
+        conn.commit()

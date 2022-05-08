@@ -24,6 +24,15 @@ def create_app(repositories):
         publication = repositories["publications"].get_publication_by_id(id)
         return object_to_json(publication)
 
+    @app.route("/api/publications/<id>", methods=["PUT"])
+    def pub_edit_by_id(id):
+        publication_diccionary = request.json
+        categories_to_extract = publication_diccionary.pop("categories")
+        publication = Publication(**publication_diccionary)
+
+        repositories["publications"].edit_publication(publication)
+        return ""
+
     @app.route("/api/publications", methods=["POST"])
     def pub_save_new():
         body = request.json
