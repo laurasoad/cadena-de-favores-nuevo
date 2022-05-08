@@ -1,5 +1,4 @@
 <template>
-  
    <article class="pub-item">
       <p>Title: {{ publication.title }}</p>
       <p>Type: {{ publication.publication_type }}</p>

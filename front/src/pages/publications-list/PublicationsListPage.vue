@@ -54,10 +54,16 @@
   }
 
   .publication-list {
-    display: flex;
+    display: flex;        
+   /* flex-flow: row wrap; interesante para que vaje a
+   la siguiente fila si no hay sitio*/
+   flex-flow: row wrap; 
+
+
     margin: 0 auto;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
+
 
   }
 

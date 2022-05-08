@@ -1,6 +1,7 @@
 from crypt import methods
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
+from src.domain.publication import Publication
 
 from src.lib.utils import object_to_json
 
@@ -22,6 +23,13 @@ def create_app(repositories):
     def pub_get_by_id(id):
         publication = repositories["publications"].get_publication_by_id(id)
         return object_to_json(publication)
+
+    @app.route("/api/publications", methods=["POST"])
+    def pub_save_new():
+        body = request.json
+        newPublication = Publication(**body)
+        repositories["publications"].save(newPublication)
+        return "", 200
 
     @app.route("/api/users", methods=["GET"])
     def users_get_all():
