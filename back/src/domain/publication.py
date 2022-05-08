@@ -137,3 +137,11 @@ class PublicationRepository:
             ),
         )
         conn.commit()
+
+    def delete(self, id):
+        sql = """DELETE FROM publications WHERE id_pub = :id_pub"""
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql, {"id_pub": id})
+
+        conn.commit()
