@@ -99,11 +99,11 @@ section {
 
 h1{
   /**
-    color: #ab4493;  color bonito
+    color: #ab4493;  color bonito - morado
 
   */
   font-size: 2em;  
-  color: #ab4493;
+  color: #04AA6D;
 }
 
 

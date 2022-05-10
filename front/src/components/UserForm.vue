@@ -14,7 +14,7 @@
     <input
       type="email"
       id="email"
-      v-model="userInForm.email"
+      v-model.trim="userInForm.email"
     />
     <label for="phone">Teléfono:</label>
     <input

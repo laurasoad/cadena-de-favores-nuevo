@@ -124,7 +124,7 @@ h1{
 
   */
   font-size: 2em;  
-  color: #ab4493;
+  color: #04AA6D;
 }
 
 

@@ -31,11 +31,11 @@ export default {
     border-radius: 1em;
     margin: 1em 2em;
     padding: 1em 2em;
-    /*max-width: 10em;*/
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     align-self: normal;
+    max-width: 14em;
 
 
   }
