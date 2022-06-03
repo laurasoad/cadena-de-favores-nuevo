@@ -52,4 +52,16 @@ export async function editPublication(publication) {
 }
 
 
+export async function deletePublicationById(id_publication) {
+  //    body: JSON.stringify(id_publication),
+
   
+  const settings = {
+    method: "DELETE",
+    body: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  await fetch(`${config.API_PATH}/publications/${id_publication}`, settings);
+}

@@ -9,13 +9,14 @@
     <li>Categories: {{ publication.categories }}</li>
 
   </ul>
-  <button >
+  <button>
     <router-link :to="`/publications/${publication.id_pub}/edit`">Editar</router-link>
-    </button> 
+    </button>
+    <button @click="erasePublication">Borrar</button>
 </template>
 <script>
 
-import { getPublicationById } from "@/services/api.js";
+import { getPublicationById,deletePublicationById } from "@/services/api.js";
 
 export default {
   name: "PublicationDetail", 
@@ -31,7 +32,22 @@ export default {
     async loadData() {
       let publicationId = this.$route.params.id;
       this.publication = await getPublicationById(publicationId)
-      }
+    },
+    async erasePublication(){
+   
+      console.log(this.publication)
+      console.log(this.publication.id_pub)
+
+      if (confirm("¿Está seguro de que quiere borrar la publicación?")) {
+        await deletePublicationById(this.publication.id_pub)
+        
+        alert("Se ha borrado correctamente")
+      } 
+
+    //Redirige a la página de detalles para ver los cambios
+    this.$router.push('/publications/');
+
+    }
       
   },
 };
