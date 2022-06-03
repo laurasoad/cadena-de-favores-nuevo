@@ -2,12 +2,19 @@ import sqlite3
 
 
 class User:
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
+    def __init__(self, user_id, first_name, last_name, email):
+        self.user_id = user_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name}
+        return {
+            "user_id": self.user_id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+        }
 
 
 class UserRepository:
@@ -22,9 +29,12 @@ class UserRepository:
 
     def init_tables(self):
         sql = """
-            create table if not exists users (
-                id varchar,
-                name varchar
+            CREATE TABLE IF NOT EXISTS users (
+                user_id VARCHAR,
+                first_name VARCHAR, 
+                last_name VARCHAR, 
+                email VARCHAR,
+                PRIMARY KEY("user_id") 
             )
         """
         conn = self.create_conn()
@@ -48,10 +58,10 @@ class UserRepository:
         return users_list
 
     def get_by_id(self, user_id):
-        sql = """SELECT * FROM users WHERE id = :id"""
+        sql = """SELECT * FROM users WHERE user_id = :user_id"""
         conn = self.create_conn()
         cursor = conn.cursor()
-        cursor.execute(sql, {"id": user_id})
+        cursor.execute(sql, {"user_id": user_id})
 
         data = cursor.fetchone()  # OJO! devuelve un diccionario
 
@@ -60,8 +70,8 @@ class UserRepository:
         return user
 
     def save(self, oneUser):
-        sql_insert_data = """insert into users (id, name) values (
-            :id, :name) """
+        sql_insert_data = """insert into users (user_id, first_name, last_name, email) values (
+            :user_id, :first_name, :last_name, :email) """
         conn = self.create_conn()
         cursor = conn.cursor()
         cursor.execute(sql_insert_data, oneUser.to_dict())

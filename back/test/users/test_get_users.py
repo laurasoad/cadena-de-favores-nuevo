@@ -13,20 +13,60 @@ def test_should_return_empty_list_of_users():
     assert response.json == []
 
 
-def test_should_resturn_list_of_users():
+def test_should_save_a_user():
     # ARRANGE (given)
     user_repository = UserRepository(temp_file())
     app = create_app(repositories={"users": user_repository})
     client = app.test_client()
 
     paco = User(
-        id="user-1",
-        name="Paco",
+        user_id="user-1", first_name="Paco", last_name="Tilla", email="paco@outlook.es"
+    )
+
+    user_repository.save(paco)
+
+    response = client.get("/api/users/user-1")
+
+    assert response.status_code == 200
+
+
+def test_should_get_a_user_by_user_id():
+
+    user_repository = UserRepository(temp_file())
+    app = create_app(repositories={"users": user_repository})
+    client = app.test_client()
+
+    paco = User(
+        user_id="user-1", first_name="Paco", last_name="Tilla", email="paco@outlook.es"
+    )
+
+    user_repository.save(paco)
+
+    response = client.get("/api/users/user-1")
+
+    assert response.json == {
+        "user_id": "user-1",
+        "first_name": "Paco",
+        "last_name": "Tilla",
+        "email": "paco@outlook.es",
+    }
+
+
+def test_should_return_list_of_users():
+    # ARRANGE (given)
+    user_repository = UserRepository(temp_file())
+    app = create_app(repositories={"users": user_repository})
+    client = app.test_client()
+
+    paco = User(
+        user_id="user-1", first_name="Paco", last_name="Tilla", email="paco@outlook.es"
     )
 
     pepa = User(
-        id="user-2",
-        name="Pepa",
+        user_id="user-2",
+        first_name="Pepa",
+        last_name="Flores",
+        email="flores@outlook.es",
     )
 
     user_repository.save(paco)
@@ -37,11 +77,15 @@ def test_should_resturn_list_of_users():
     # ASSERT
     assert response.json == [
         {
-            "id": "user-1",
-            "name": "Paco",
+            "user_id": "user-1",
+            "first_name": "Paco",
+            "last_name": "Tilla",
+            "email": "paco@outlook.es",
         },
         {
-            "id": "user-2",
-            "name": "Pepa",
+            "user_id": "user-2",
+            "first_name": "Pepa",
+            "last_name": "Flores",
+            "email": "flores@outlook.es",
         },
     ]

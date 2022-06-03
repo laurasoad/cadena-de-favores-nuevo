@@ -2,8 +2,12 @@ import sqlite3
 
 
 class Publication:
-    def __init__(self, id_pub, publication_type, title, description, date, location):
+    def __init__(
+        self, id_pub, user_id, publication_type, title, description, date, location
+    ):
+
         self.id_pub = id_pub
+        self.user_id = user_id
         self.publication_type = publication_type
         self.title = title
         self.description = description
@@ -14,6 +18,7 @@ class Publication:
     def to_dict(self):
         return {
             "id_pub": self.id_pub,
+            "user_id": self.user_id,
             "publication_type": self.publication_type,
             "title": self.title,
             "description": self.description,
@@ -37,12 +42,12 @@ class PublicationRepository:
         sql_table_publications = """
             CREATE TABLE IF NOT EXISTS publications (
                 id_pub VARCHAR NOT NULL PRIMARY KEY,
+                user_id VARCHAR,
                 publication_type INTEGER,
                 title VARCHAR,
                 description VARCHAR,
                 date VARCHAR,
-                location VARCHAR
-                
+                location VARCHAR                
             )
         """
 
@@ -102,9 +107,9 @@ class PublicationRepository:
 
     def save(self, publication):
 
-        sql = """INSERT INTO publications (id_pub, publication_type, title, description, date,
+        sql = """INSERT INTO publications (id_pub, user_id, publication_type, title, description, date,
          location) values (
-           :id_pub, :publication_type, :title, :description, :date, :location
+           :id_pub, :user_id, :publication_type, :title, :description, :date, :location
         ) """
         conn = self.create_conn()
         cursor = conn.cursor()
@@ -112,6 +117,7 @@ class PublicationRepository:
             sql,
             {
                 "id_pub": publication.id_pub,
+                "user_id": publication.user_id,
                 "publication_type": publication.publication_type,
                 "title": publication.title,
                 "description": publication.description,
@@ -138,7 +144,7 @@ class PublicationRepository:
         )
         conn.commit()
 
-    def delete(self, id):
+    def delete_by_id(self, id):
         sql = """DELETE FROM publications WHERE id_pub = :id_pub"""
         conn = self.create_conn()
         cursor = conn.cursor()
