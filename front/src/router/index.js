@@ -22,17 +22,7 @@ const routes = [
     component: () => import('@/pages/publication-detail/PublicationDetailPage.vue'),
   },
 
-  {
-    path: "/publications/offer",
-    name: "NewPublicationOfferHelp",
-    component: () => import('@/pages/publication-create/NewPublicationOfferHelpPage.vue'),
-  },
 
-  {
-    path: "/publications/seek",
-    name: "NewPublicationSeekHelp",
-    component: () => import('@/pages/publication-create/NewPublicationSeekHelpPage.vue'),
-  },
 
   {
     path: "/publications/:id/edit",
