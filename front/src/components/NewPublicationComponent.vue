@@ -1,3 +1,6 @@
+
+
+
 <template>
 
 <section>
@@ -28,6 +31,8 @@
 
 </template>
 
+
+
 <script>
 import { v4 as uuidv4 } from "uuid";
 import { addPublication } from "@/services/api.js";
@@ -36,13 +41,30 @@ import { addPublication } from "@/services/api.js";
 
 
 export default {
-    name: "NewPublicationSeekHelp",
+    name: "NewPublicationComponent",
     data() {
         return {
 
-            pubInForm: {}
+            pubInForm: {},
+            activeUser : JSON.parse(localStorage.getItem("activeUserWatcher"))
+            
+
         }
-    }, 
+    },
+    props: {
+        publication_type: {
+            type: String,
+            required: true
+        }
+    },
+    emits: ["sendingNewUser"],
+    computed: {
+      isAnyUserActive() {
+         console.log("i")
+      console.log("isAnyUserActive ", this.activeUser != null)
+      return this.activeUserId != null
+  },
+  },
     methods: {
 
       isEmpty() {
@@ -53,13 +75,13 @@ export default {
         );
       },
 
-       async addNewPublication(){
+      async addNewPublication(){
          if(this.isEmpty()){
             alert("Rellene todos los campos, por favor");
          } else {
            //Guardamos los todos los datos de la publicación
             this.pubInForm.id_pub= uuidv4();
-            this.pubInForm.publication_type ="0"
+            this.pubInForm.publication_type = this.publication_type
             //Se guarda el día
             let today = new Date()
             today = today.toISOString().slice(0,10)
@@ -67,6 +89,8 @@ export default {
 
             //Imprime el objeto entero
             console.log(this.pubInForm)
+            this.$emit("sendingNewPublication", this.pubInForm)         
+
 
             await addPublication(this.pubInForm);
             
@@ -190,3 +214,4 @@ form textarea:focus{
 
 
 </style>
+
