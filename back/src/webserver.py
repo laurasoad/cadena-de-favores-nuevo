@@ -118,4 +118,18 @@ def create_app(repositories):
         users = repositories["users"].get_by_id(id)
         return object_to_json(users)
 
+    @app.route("/api/users", methods=["POST"])
+    def user_save_new(id):
+        # No Auth
+        body = request.json
+        newUser = User(
+            user_id=body["user_id"],
+            first_name=body["first_name"],
+            last_name=body["last_name"],
+            email=body["email"],
+        )
+
+        repositories["users"].save(newUser)
+        return "", 200
+
     return app
