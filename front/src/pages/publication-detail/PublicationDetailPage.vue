@@ -9,21 +9,31 @@
     <li>Categories: {{ publication.categories }}</li>
 
   </ul>
-  <button>
+  <button v-if="isThisUserTheOwnerOfPublication">
     <router-link :to="`/publications/${publication.id_pub}/edit`">Editar</router-link>
     </button>
-    <button @click="erasePublication">Borrar</button>
+    <button  v-if="isThisUserTheOwnerOfPublication" @click="erasePublication">Borrar</button>
 </template>
 <script>
 
-import { getPublicationById,deletePublicationById } from "@/services/api.js";
+import { getPublicationById, deletePublicationById, getUserId } from "@/services/api.js";
 
 export default {
   name: "PublicationDetail", 
   data() {
     return {
       publication: {},
+      activeUserId : "", //JSON.parse(localStorage.getItem("activeUserWatcher"))
     };
+  },
+  computed: {
+      isThisUserTheOwnerOfPublication() {
+
+      if(this.activeUserId != ""){
+        return this.activeUserId == this.publication.user_id
+      }
+      return false
+  }
   },
   mounted() {
     this.loadData();
@@ -32,6 +42,9 @@ export default {
     async loadData() {
       let publicationId = this.$route.params.id;
       this.publication = await getPublicationById(publicationId)
+      // cargar id usuario activo
+      this.activeUserId = getUserId()
+
     },
     async erasePublication(){
    
@@ -47,9 +60,10 @@ export default {
     //Redirige a la página de detalles para ver los cambios
     this.$router.push('/publications/');
 
-    }
-      
-  },
+    },  
+
+    
+  }
 };
 </script>
 <style scoped>

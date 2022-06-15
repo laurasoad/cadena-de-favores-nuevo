@@ -1,7 +1,7 @@
 <template>
 
 <section>
-  <h1>Nueva Publicación</h1>
+  <h1>Editar Publicación</h1>
 
   <form>
     <label for="title">Título:</label>
@@ -39,7 +39,8 @@ export default {
     data() {
         return {
             publication: {},
-            modifiedPublication:{}
+            modifiedPublication:{},
+            activeUser : JSON.parse(localStorage.getItem("activeUserWatcher"))
         }
     }, 
     mounted() {
@@ -56,12 +57,19 @@ export default {
       //     comparando los datos de  "publication" y modifiedPublication"
 
       this.modifiedPublication.id_pub = this.publication.id_pub;
+      this.modifiedPublication.user_id = this.publication.user_id; // anadido user_id a clase Publication
       this.modifiedPublication.publication_type = this.publication.publication_type;
       this.modifiedPublication.title = this.publication.title;
       this.modifiedPublication.description = this.publication.description;
       this.modifiedPublication.location = this.publication.location;
       this.modifiedPublication.date = this.publication.date;
       this.modifiedPublication.categories = this.publication.categories;
+      // añadido (añadiendo usuarios con local Storage)
+      console.log("hola desde editar pub")
+      console.log("usuario que creo pub: ", this.publication.user_id);
+      console.log("local storage user (watcher)",this.activeUser)
+
+
 
       },
       isEmpty() {
