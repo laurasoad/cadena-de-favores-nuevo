@@ -16,12 +16,16 @@
       id="email"
       v-model.trim="userInForm.email"
     />
-    <label for="phone">Teléfono:</label>
+   <!--
+<label for="phone">Teléfono:</label>
     <input
       type="tel"
       id="phone"
       v-model="userInForm.phone"
     />
+
+   --> 
+    
     <button @click="onCreateNewUser">
       Crear usuario
     </button>
@@ -34,10 +38,12 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default {
     name: "UserFormComponent",
     props: {
-        help_type: {
+        user_type: { //borrar prop
             type: String,
             required: true
         }
@@ -49,14 +55,15 @@ export default {
         return {
 
             userInForm: {},
-            received_help: this.help_type
+            received_user: this.user_type 
             // userInForm: this.user       
         }
     }, 
     methods: {
         onCreateNewUser(){
-            this.userInForm.help_type = this.received_help
-            this.$emit("sendingNewUser", this.userInForm)         
+
+          this.userInForm.user_id = uuidv4();
+          this.$emit("sendingNewUser", this.userInForm)         
         }
     }
 
