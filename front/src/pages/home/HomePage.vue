@@ -2,82 +2,163 @@
   <div class="home">
     <img alt="Vue logo" src="@/assets/img/logo.png" />
     <h1>{{ title }}</h1>
-    <button  @click="onGoToPublicationsClicked">Go to publication List</button>
+    <button  @click="onGoToPublicationsClicked">Ver las Publicaciones</button>
 
-    <section>
 
-      <button class="seekbutton" @click="onSeekHelpClicked">Busco ayuda</button>
-      <article v-show="isSeekHelpClicked">
-        <UserFormComponent help_type="seek" @sendingNewUser="onSavingNewUser" />   
-        <button class="goToCreatePubButton" @click="onCreatingNewSeekHelpPublication">
-            Crear publicación (seek)</button>
-      </article>
-            
-      <button class="offerbutton" @click="onOfferHelpClicked">Quiero ayudar</button>
-      <article v-show="isOfferHelpClicked">
-         <UserFormComponent help_type="offer"  @sendingNewUser="onSavingNewUser" /> 
-          <button class="goToCreatePubButton" @click="onCreatingNewOfferHelpPublication">
-            Crear publicación Offer</button>
-      </article>
-     
+
+
+    <section> <h2>Crear Publicacion desplegable (componente seek/ offer)</h2>
+      <button class="seekbutton" @click="onCreateNeedHelpPublicationClicked">Busco ayuda</button>
+        <article v-show="isCreateNewSeekForHelpClicked">    
+            <NewPublicationComponent  publication_type="0"/>   
+        </article>
+
+          
+      <button class="offerbutton" @click="onCreateOfferHelpPublicationClicked">Quiero ayudar</button>
+         <article v-show="isCreateNewOfferOfHelpClicked">
+         <NewPublicationComponent  publication_type="1"/>
+         </article>
     </section>
+  
+    <section> <h2>Formulario Crear Nuevo Usuario o Loguearse</h2>
+
+      <button class="createuserbutton" @click="onCreateNewUserClicked">Registrarse</button>
+        <article v-show="isCreateNewUserClicked">
+          <UserFormComponent user_type="new" @sendingNewUser="onSavingNewUser" />   
+        </article>
+            
+      <button class="loginbutton" @click="onLogInUserClicked">Loguearse</button>
+        <article v-show="isLogInUserClicked">
+          <h2>Seleccionar usuario precargado</h2>
+            <select v-model="selectedUser">
+              <option :value="null" disabled>Selecciona un usuario</option>
+              <option v-for="user in usersList" :value="user" :key="user.id">
+                {{user.user_id}} - {{ user.first_name }}  {{ user.last_name }}
+              </option>
+            </select>
+            <button @click="selectingUser">Seleccionar Usuario</button>
+        </article>
+      </section>
+    
   </div>
 </template>
 
 <script>
-import UserFormComponent from "@/components/UserForm.vue"
+           
+import { getUsers, saveNewUser} from "@/services/api.js";
+
+import UserFormComponent  from "@/components/UserForm.vue"
+import NewPublicationComponent  from "@/components/NewPublicationComponent.vue"
+
+
 export default {
   name: 'Home',
   components:{
-    UserFormComponent
-  },
+    UserFormComponent,
+    NewPublicationComponent
+},
   data() {
     return {
       title: "Welcome",
       publication_list: [],
-      isSeekHelpClicked: false,
-      isOfferHelpClicked: false,
-      newUser: {}
+      isCreateNewSeekForHelpClicked: false,
+      isCreateNewOfferOfHelpClicked: false,
+      isCreateNewUserClicked: false,
+      isLogInUserClicked: false,
+      newUser: {}, // Para cuando se puedan registrar los usuarios
+      selectedUser: null,
+      // retrievedUser: {}, // PARA LA SOLUCION_01
+      usersList: []
+    }
+  },
+  mounted() {
+    
+    this.loadData();
+   
 
-
+  },
+  watch: {
+    selectedUser:{
+      handler(newSelectedUser){
+        localStorage.activeUserWatcher = JSON.stringify(newSelectedUser);
+      },
+      deep: true
     }
   },
   
   methods: {
-    onGoToPublicationsClicked() {
+    async loadData() {
+       this.usersList = await getUsers()
+    },
+
+    selectingUser() {
+      
+      // 1) Seleccionar usuario y recargar para guardar en local Storage
+      /** SOLUCION CLASICA_00
+       localStorage.user_id = this.selectedUser.user_id,
+      localStorage.first_name = this.selectedUser.first_name,
+      localStorage.last_name = this.selectedUser.last_name,
+      localStorage.email = this.selectedUser.email
+
+      console.log("localUser HomePage first name: ", localStorage.first_name)
+
+       */
+      
+      /**
+       * --> SOLUCION_01
+       localStorage.setItem('activeUser', JSON.stringify(this.selectedUser))//stringify object and store
+      this.retrievedUser= JSON.parse(localStorage.getItem('activeUser')) //retrieve the object
+      console.log("retrievedUser", this.retrievedUser)
+       */
+
+
+
+      this.$root.$forceUpdate();
+ 
+
+      console.log("selectedUser HomePage: ", this.selectedUser)
+      console.log("localUser HomePage activeUserWatcher: ", localStorage.activeUserWatcher)
+
+
+     
+      alert("usuario seleccionado!")
+            this.$root.$forceUpdate();
+            this.$router.$forceUpdate();//ahora home, luego otra page
+
+    },
+
+    onGoToPublicationsClicked() { //no se usa, borrar
       console.log("---> onGoToPublicationsClicked()")
 
-      // this.localUser.id = this.selectedUser.id,
-      //this.localUser.name = this.selectedUser.name
-      
-      // 2) Ir a la pagina de contactos
-        this.$root.$forceUpdate();
+      // 1) Ir a la pagina de contactos
         this.$router.push("/publications");
     },
 
 
-    onOfferHelpClicked() {
-      console.log("clicked offer");
-      this.isOfferHelpClicked = !this.isOfferHelpClicked
+    onLogInUserClicked() { 
+      console.log("clicked: onLogInUserClicked");
+      this.isLogInUserClicked = !this.isLogInUserClicked
     },
-    onSeekHelpClicked() {
-      console.log("clicked seek");
-      this.isSeekHelpClicked = !this.isSeekHelpClicked
+    onCreateNewUserClicked() {
+      console.log("clicked: onCreateNewUserClicked");
+      this.isCreateNewUserClicked = !this.isCreateNewUserClicked
     },
 
-    onSavingNewUser(oneUser){
+    async onSavingNewUser(oneUser){
       console.log("usuario nuevo recibido del hijo: ", oneUser)
       this.newUser = oneUser
+      console.log("guardando ", oneUser)
+      saveNewUser(oneUser)
     },
-    onCreatingNewSeekHelpPublication(){
-      this.$router.push("/publications/seek");
+    onCreateNeedHelpPublicationClicked(){ //nuevo
+            this.isCreateNewSeekForHelpClicked = !this.isCreateNewSeekForHelpClicked
 
+    },
+    onCreateOfferHelpPublicationClicked(){ //nuevo
+            this.isCreateNewOfferOfHelpClicked = !this.isCreateNewOfferOfHelpClicked
 
     },
 
-    onCreatingNewOfferHelpPublication(){
-      this.$router.push("/publications/offer");
-    }
 
 
 
@@ -88,7 +169,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 h1 {
   font-style: italic;
