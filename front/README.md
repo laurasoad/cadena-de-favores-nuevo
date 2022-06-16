@@ -1,5 +1,7 @@
 # Aplicación semilla (front)
 
+La Aplicación está en versión alfa, contar con unos días de trabajo más, hará que se puedan llegar a comunicar personas con ella y mejoren un poco su vida!
+
 ## Configuración del proyecto
 ```
 npm install
