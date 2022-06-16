@@ -92,27 +92,6 @@ export default {
     },
 
     selectingUser() {
-      
-      // 1) Seleccionar usuario y recargar para guardar en local Storage
-      /** SOLUCION CLASICA_00
-       localStorage.user_id = this.selectedUser.user_id,
-      localStorage.first_name = this.selectedUser.first_name,
-      localStorage.last_name = this.selectedUser.last_name,
-      localStorage.email = this.selectedUser.email
-
-      console.log("localUser HomePage first name: ", localStorage.first_name)
-
-       */
-      
-      /**
-       * --> SOLUCION_01
-       localStorage.setItem('activeUser', JSON.stringify(this.selectedUser))//stringify object and store
-      this.retrievedUser= JSON.parse(localStorage.getItem('activeUser')) //retrieve the object
-      console.log("retrievedUser", this.retrievedUser)
-       */
-
-
-
       this.$root.$forceUpdate();
  
 
@@ -199,9 +178,7 @@ section {
   flex-direction: column;
   align-items: center;
 }
-.seekbutton, .offerbutton {
-    color: red;
-}
+
 
 
 
@@ -213,7 +190,12 @@ article {
   padding: 2em;
   border-radius:1em;
 	margin:0 auto;
-	background-color:rgb(221, 214, 214);
+  /** 
+  
+	background-color: #fbfbfb;
+  border: 1px solid #04AA6D;
+   */
+  background-color:rgb(214, 218, 221);
   max-width: fit-content;
   }
 
