@@ -23,7 +23,7 @@ export default {
     
   },
   methods: {
-    async loadUser() {
+    loadUser() {
            //  window.localStorage.removeItem('activeUserWatcher')
         //window.localStorage.setItem('activeUserWatcher')
       // cargar id usuario activo
