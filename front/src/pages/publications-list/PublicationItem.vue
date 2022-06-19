@@ -1,11 +1,11 @@
 <template>
    <article class="pub-item">
-      <p>Title: {{ publication.title }}</p>
-      <p>Type: {{ publication.publication_type }}</p>
-      <p> Categories: {{ publication.categories }}</p>
-      <p>Location: {{ publication.location }}</p>
+      <p>Título: {{ publication.title }}</p>
+      <p>Tipo de publicación: {{ publication.publication_type }}</p>
+      <p> Categoría: {{ publication.categories }}</p>
+      <p>Lugar: {{ publication.location }}</p>
       <button>
-         <router-link :to="`/publications/${publication.id_pub}`">Details</router-link>
+      <router-link :to="`/publications/${publication.id_pub}`">Details</router-link>
       </button>
    </article>
 </template>
@@ -18,7 +18,27 @@ export default {
       type: Object,
       required: true,
     },
+  },  
+
+  /**
+    <button @click="goToDetailsClicked">
+        Detalles
+      
+      </button>
+      
+  methods: {
+    goToDetailsClicked() { 
+      console.log("---> onGoToDetailsClicked()"
+   
+     // this.$router.push({ name: 'user', path : '/publications/:id', params: { publication.id_pub: `${publication.id_pub} } })
+
+     
+    },
   },
+  
+  
+  */
+
 };
 </script>
 
@@ -39,6 +59,7 @@ export default {
 
 
   }
+  
 
   .pub-item:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
