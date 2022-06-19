@@ -10,13 +10,13 @@
     <section> <h2>Crear Publicacion desplegable (componente seek/ offer)</h2>
       <button class="seekbutton" @click="onCreateNeedHelpPublicationClicked">Busco ayuda</button>
         <article v-show="isCreateNewSeekForHelpClicked">    
-            <NewPublicationComponent  publication_type="0"/>   
+            <NewPublicationComponent  publication_type="0" class="seekhelp"/>   
         </article>
 
           
       <button class="offerbutton" @click="onCreateOfferHelpPublicationClicked">Quiero ayudar</button>
          <article v-show="isCreateNewOfferOfHelpClicked">
-         <NewPublicationComponent  publication_type="1"/>
+         <NewPublicationComponent  publication_type="1" class="offerhelp"/>
          </article>
     </section>
   
@@ -65,16 +65,24 @@ export default {
       isCreateNewOfferOfHelpClicked: false,
       isCreateNewUserClicked: false,
       isLogInUserClicked: false,
-      newUser: {}, // Para cuando se puedan registrar los usuarios
       selectedUser: null,
-      // retrievedUser: {}, // PARA LA SOLUCION_01
       usersList: []
     }
   },
+
   mounted() {
+     
     
     this.loadData();
-   
+    /*
+    if (localStorage.getItem('activeUserWatcher')) {
+      try {
+        this.selectedUser = JSON.parse(localStorage.getItem('activeUserWatcher'));
+      } catch(e) {
+        localStorage.removeItem('activeUserWatcher');
+      }
+    }
+   **/
 
   },
   watch: {
@@ -92,8 +100,13 @@ export default {
     },
 
     selectingUser() {
-      this.$root.$forceUpdate();
- 
+
+      /*
+     let parsed = JSON.stringify(this.selectedUser);
+      localStorage.setItem('activeUserWatcher', parsed);
+      **/
+    
+      
 
       console.log("selectedUser HomePage: ", this.selectedUser)
       console.log("localUser HomePage activeUserWatcher: ", localStorage.activeUserWatcher)
@@ -101,8 +114,12 @@ export default {
 
      
       alert("usuario seleccionado!")
-            this.$root.$forceUpdate();
-            this.$router.$forceUpdate();//ahora home, luego otra page
+      // NO funciona
+     this.$root.$forceUpdate();
+     this.$router.$forceUpdate();//ahora home, luego otra page
+
+      
+
 
     },
 
@@ -125,9 +142,10 @@ export default {
 
     async onSavingNewUser(oneUser){
       console.log("usuario nuevo recibido del hijo: ", oneUser)
-      this.newUser = oneUser
-      console.log("guardando ", oneUser)
+   
+      console.log("guardando Usuario, first_name usuario:", oneUser.first_name)
       saveNewUser(oneUser)
+      alert("Usuario creado!")
     },
     onCreateNeedHelpPublicationClicked(){ //nuevo
             this.isCreateNewSeekForHelpClicked = !this.isCreateNewSeekForHelpClicked
@@ -148,6 +166,16 @@ export default {
 </script>
 
 <style scoped>
+
+  .seekhelp {
+    color: peru;
+    /**En nueva Publicacion se ven los cambios*/
+
+  }
+  .offerhelp {
+    color: rgb(54, 64, 140); 
+    /**En nueva Publicacion se ven los cambios*/
+  }
 
 h1 {
   font-style: italic;
