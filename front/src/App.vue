@@ -46,3 +46,16 @@ export default {
   
   
 </script>
+<style>
+/**
+ .nav{
+    background-color: blueviolet;
+    border-bottom: 4px solid gray;
+    box-sizing: border-box;
+    color: #fff;
+
+  }
+*/
+ 
+  
+</style>

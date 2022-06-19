@@ -165,17 +165,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped>´
 
+/*
+ En nueva Publicacion se ven los cambios
   .seekhelp {
     color: peru;
-    /**En nueva Publicacion se ven los cambios*/
+   
 
   }
   .offerhelp {
     color: rgb(54, 64, 140); 
-    /**En nueva Publicacion se ven los cambios*/
+  
   }
+*/
+
 
 h1 {
   font-style: italic;
