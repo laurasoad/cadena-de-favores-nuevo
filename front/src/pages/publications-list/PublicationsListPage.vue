@@ -37,7 +37,7 @@
       async loadData() {
         this.publicationList = await getPublications();
       }
-      
+
     },
       computed: {
         filteredData(){
@@ -56,11 +56,9 @@
 
   body {
     margin: 0 auto;
-    /** */
     font-family: 'Nunito Sans';
     background-color: #f2f2f2;
     }
-  
 
     #search{
       background-color: #fbfbfb; 

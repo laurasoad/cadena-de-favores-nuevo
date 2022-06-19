@@ -1,15 +1,16 @@
 <template>
    <article class="pub-item" v-bind:class="{seek: seekHelpStyle, offer: offerHelpStyle}">
+
       <section>
         <h4>{{ publication.title }}</h4>
         <p> Categoría: {{ publication.categories }}</p>
         <p>Lugar: {{ publication.location }}</p>
-
       </section>
 
       <button @click="goToDetailsClicked">
         Detalles 
       </button>
+
    </article>
 </template>
 
@@ -41,16 +42,9 @@ export default {
       },
       goToDetailsClicked() { 
       console.log("---> onGoToDetailsClicked()")
-   
       this.$router.push({ name: 'PublicationDetail', params: { id: `${this.publication.id_pub}`} } )
       }
-
     },
-  
-  
-  
-  
-
 };
 </script>
 
