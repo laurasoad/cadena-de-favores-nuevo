@@ -34,9 +34,14 @@ def create_app(repositories):
             description=body["description"],
             date=body["date"],
             location=body["location"],
+            category_id=body["category_id"],
+            tags=body["tags"],
         )
 
         repositories["publications"].save(newPublication)
+        repositories["publications"].save_publication_tags(
+            newPublication.id_pub, newPublication.tags
+        )
         return "", 200
 
     @app.route("/api/publications/<id>", methods=["GET"])
@@ -68,7 +73,6 @@ def create_app(repositories):
         if not is_authorized:
             return "", 403  # cláusula de guarda
 
-        categories_to_extract = body.pop("categories")
         publication = Publication(
             id_pub=body["id_pub"],
             user_id=user_id_auth,
@@ -77,8 +81,13 @@ def create_app(repositories):
             description=body["description"],
             date=body["date"],
             location=body["location"],
+            category_id=body["category_id"],
+            tags=[],
         )
-
+        # Guardamos las nuevas tags
+        repositories["publications"].save_publication_tags(
+            publication.id_pub, body["tags"]
+        )
         repositories["publications"].edit_publication(publication)
         return "", 200
 
@@ -98,6 +107,12 @@ def create_app(repositories):
 
         repositories["publications"].delete_by_id(id)
         return "", 200
+
+    # TAGS
+    @app.route("/api/tags", methods=["GET"])
+    def tag_get_all():
+        tags = repositories["tags"].get_all_tags()
+        return object_to_json(tags)
 
     # USERS
 
