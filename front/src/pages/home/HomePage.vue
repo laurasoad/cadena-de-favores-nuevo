@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="@/assets/img/logo.png" />
+        <img class="logo" alt="Help logo" src="@/assets/img/helplogo.png" />
+
+    <img class="logo" alt="Vue logo" src="@/assets/img/logo.png" />
     <h1>{{ title }}</h1>
     <button  @click="onGoToPublicationsClicked">Ver las Publicaciones</button>
 
@@ -166,6 +168,17 @@ export default {
 </script>
 
 <style scoped>´
+.logo {
+  border: 3px solid rgb(182, 49, 49);
+  border-radius: 40%;
+  max-height: 9em;
+  max-width: 9em;
+  
+}
+
+img:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
 
 /*
  En nueva Publicacion se ven los cambios
