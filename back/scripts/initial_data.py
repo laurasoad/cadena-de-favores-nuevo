@@ -7,10 +7,12 @@ def main():
 
     from src.domain.publication import Publication, PublicationRepository
     from src.domain.user import User, UserRepository
+    from src.domain.tag import TagRepository, Tag
 
     database_path = "data/database.db"
-
+    pub_repository = PublicationRepository(database_path)
     user_repository = UserRepository(database_path)
+    tag_repository = TagRepository(database_path)
 
     homero = User(
         user_id="user-1",
@@ -45,7 +47,6 @@ def main():
     user_repository.save(ruth)
     user_repository.save(jeff)
 
-    pub_repository = PublicationRepository(database_path)
     pub_repository.save(
         Publication(
             id_pub="1",
@@ -55,6 +56,8 @@ def main():
             description="Busco alguien que me dé clases por las tardes en Bilbao",
             date="2022-03-29",
             location="Bilbao",
+            category_id="CAT_EDUCATION",
+            tags=[],
         )
     )
 
@@ -67,6 +70,8 @@ def main():
             description="Licenciada en matematicas se ofrece a dar clases",
             date="2022-03-30",
             location="Bilbao",
+            category_id="CAT_EDUCATION",
+            tags=[],
         )
     )
 
@@ -79,6 +84,8 @@ def main():
             description="¿Te apetece iniciarte en el mundo de la guitarra? háblame!",
             date="2022-03-28",
             location="Online",
+            category_id="CAT_EDUCATION",
+            tags=[],
         )
     )
 
@@ -91,6 +98,8 @@ def main():
             description="bla bla bla",
             date="2022-03-29",
             location="Donosti",
+            category_id="CAT_SOCIAL_SERVICES",  # CAMBIAR
+            tags=[],
         )
     )
     pub_repository.save(
@@ -102,6 +111,8 @@ def main():
             description="Creo que tiene el tambor estropeado",
             date="2022-06-11",
             location="Getxo",
+            category_id="CAT_JOBS",  # CAMBIAR
+            tags=[],
         )
     )
     pub_repository.save(
@@ -113,8 +124,20 @@ def main():
             description="Gradudada en administración ofrece clases, tengo disponibilidad los fines de semana",
             date="2022-06-12",
             location="Portugalete",
+            category_id="CAT_EDUCATION",
+            tags=[],
         )
     )
+
+    tag_repository.save(Tag(tag_id=1, name="#lavadora"))
+    tag_repository.save(Tag(2, "#online"))
+    tag_repository.save(Tag(3, "#mates"))
+    tag_repository.save(Tag(4, name="#clases"))
+    tag_repository.save(Tag(5, name="#musica"))
+
+    # Agregamos etiquetas a las publicaciones
+    pub_repository.save_publication_tags("1", [2, 3, 4])
+    pub_repository.save_publication_tags("2", [2, 3, 4])
 
 
 if __name__ == "__main__":
