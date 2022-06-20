@@ -16,9 +16,11 @@ def test_should_return_one_publication_by_id_in_database():
             user_id="user-1",
             publication_type=0,
             title="necesito clases de mates",
-            description="hola me llamo Nerea y busco alguien que me de clases por las tardes en Bilbao",
+            description="hola me llamo Nerea y busco alguien que me dé clases por las tardes en Bilbao",
             date="2022-03-30",
             location="Bilbao",
+            category_id="CAT_EDUCATION",
+            tags=["#education", "#math", "#online"],
         )
     )
 
@@ -37,7 +39,8 @@ def test_should_return_one_publication_by_id_in_database():
         "description": "hola me llamo Nerea y busco alguien que me de clases por las tardes en Bilbao",
         "date": "2022-03-30",
         "location": "Bilbao",
-        "categories": [],
+        "category_id": "CAT_EDUCATION",
+        "categories": [["#education", "#math", "#online"]],
     }
 
 
@@ -65,8 +68,11 @@ def test_other_users_should_see_one_publication_by_id_and_its_detailss():
     )
 
     # COMPARACIÓN
+    json_response = response_user1_publication.json
     assert response_user1_publication.status_code == 200
-    assert response_user1_publication.json == {
+
+    assert json_response["id_pub"] == "1"
+    assert json_response == {
         "id_pub": "1",
         "user_id": "user-1",
         "publication_type": 0,
