@@ -172,7 +172,7 @@ class PublicationRepository:
 
         return tag_id_list
 
-    def get_all_tags_by_publication_id(self, id_pub):
+    def get_all_tags_with_names_by_publication_id(self, id_pub):
         sql = """select * from  publicationstags
                 where id_pub=?"""
         conn = self.create_conn()
@@ -190,15 +190,6 @@ class PublicationRepository:
 
         conn = self.create_conn()
         cursor = conn.cursor()
-        ### tags
-        # if publication.tags != []:
-        #     for tag in publication.tags:
-
-        #         sql_tag = """INSERT INTO publicationstags (id_pub, tag_id) values (:id_pub,
-        #                     :tag_id) """
-        #         cursor.execute(sql_tag, {"id_pub": publication.id_pub, "tag_id": tag})
-        # # fin tags
-
         cursor.execute(
             sql,
             {
@@ -262,3 +253,32 @@ class PublicationRepository:
         cursor.execute(sql, {"id_pub": id})
 
         conn.commit()
+
+    def search_publications_by_user_id(self, user_id):
+        sql = """ SELECT * FROM publications WHERE user_id = :user_id"""
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql, {"user_id": user_id})
+
+        data = cursor.fetchall()
+
+        publications_list = []
+
+        for element in data:
+            id = element["id_pub"]
+            publication = Publication(
+                id_pub=element["id_pub"],
+                user_id=element["user_id"],
+                publication_type=element["publication_type"],
+                title=element["title"],
+                description=element["description"],
+                date=element["date"],
+                location=element["location"],
+                category_id=element["category_id"],
+                tags=self.get_publication_id_tags(id)
+                # Rellenamos el atributo con la lista
+            )
+
+            publications_list.append(publication)
+
+        return publications_list

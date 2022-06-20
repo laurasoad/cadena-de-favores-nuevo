@@ -147,4 +147,12 @@ def create_app(repositories):
         repositories["users"].save(newUser)
         return "", 200
 
+    @app.route("/api/users/<id>/publications", methods=["GET"])
+    def users_get_publications_by_user_id(id):
+
+        user_publication_list = repositories[
+            "publications"
+        ].search_publications_by_user_id(id)
+        return object_to_json(user_publication_list), 200
+
     return app
