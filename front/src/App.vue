@@ -19,16 +19,25 @@ export default {
   },
   
   mounted() {
-    this.loadData();
+    this.loadUser();
+    
   },
   methods: {
-    async loadData() {
-     
+    loadUser() {
+           //  window.localStorage.removeItem('activeUserWatcher')
+        //window.localStorage.setItem('activeUserWatcher')
       // cargar id usuario activo
       this.activeUser = JSON.parse(localStorage.getItem("activeUserWatcher"))
-
-      
-
+    /**
+        if (localStorage.getItem('activeUserWatcher')) {
+      try {
+        this.activeUser = JSON.parse(localStorage.getItem('activeUserWatcher'));
+      } catch(e) {
+        localStorage.removeItem('activeUserWatcher');
+      }
+    }
+     */
+   
     },
   }
 };
@@ -37,3 +46,16 @@ export default {
   
   
 </script>
+<style>
+/**
+ .nav{
+    background-color: blueviolet;
+    border-bottom: 4px solid gray;
+    box-sizing: border-box;
+    color: #fff;
+
+  }
+*/
+ 
+  
+</style>

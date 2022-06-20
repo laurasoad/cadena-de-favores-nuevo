@@ -1,13 +1,10 @@
 <template>
   <h1>Publication detail:  {{ publication.id_pub }} </h1>
   <ul class="pub-item">
-    <li>Title: {{ publication.title }}</li>
-    <li>Type: {{ publication.publication_type }}</li>
-    <li>Description: {{ publication.description }}</li>
-    <li>Location: {{ publication.location }}</li>
-    <li>Date: {{ publication.date }}</li>
-    <li>Categories: {{ publication.categories }}</li>
-
+      <li>Título: {{ publication.title }}</li>
+      <li>Tipo de publicación: {{ publication.publication_type }}</li>
+      <li> Categoría: {{ publication.categories }}</li>
+      <li>Lugar: {{ publication.location }}</li>
   </ul>
   <button v-if="isThisUserTheOwnerOfPublication">
     <router-link :to="`/publications/${publication.id_pub}/edit`">Editar</router-link>
