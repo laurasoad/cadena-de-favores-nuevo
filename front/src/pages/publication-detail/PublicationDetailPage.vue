@@ -2,9 +2,12 @@
   <h1>Publication detail:  {{ publication.id_pub }} </h1>
   <ul class="pub-item">
       <li>Título: {{ publication.title }}</li>
+      <li>Descripción: {{ publication.description }}</li>
       <li>Tipo de publicación: {{ publication.publication_type }}</li>
-      <li> Categoría: {{ publication.categories }}</li>
       <li>Lugar: {{ publication.location }}</li>
+      <li>Categoría: {{ nameCat}}</li>
+      <li>Etiquetas: {{ publication.tags}}</li>
+      <li>Fecha de publicación: {{ publication.date }}</li>
   </ul>
   <button v-if="isThisUserTheOwnerOfPublication">
     <router-link :to="`/publications/${publication.id_pub}/edit`">Editar</router-link>
@@ -21,6 +24,17 @@ export default {
     return {
       publication: {},
       activeUserId : "", //JSON.parse(localStorage.getItem("activeUserWatcher"))
+      categoriesList:[
+            {"category_id":"CAT_GENERAL", "name":"General"}, // añadir imágenes
+            {"category_id":"CAT_EDUCATION", "name":"Educación"},
+            {"category_id":"CAT_MUSIC", "name":"Música"},
+            {"category_id":"CAT_HEALTH", "name":"Salud"}],
+      nameCat: "",
+       tagsList: [
+              {id:1, "name": '#clases'},
+              {id:2, "name": '#mates' },
+              {id:3, "name": '#online' },
+              {id:4, "name": '#piano'}],
     };
   },
   computed: {
@@ -30,7 +44,8 @@ export default {
         return this.activeUserId == this.publication.user_id
       }
       return false
-  }
+  },
+
   },
   mounted() {
     this.loadData();
@@ -41,6 +56,7 @@ export default {
       this.publication = await getPublicationById(publicationId)
       // cargar id usuario activo
       this.activeUserId = getUserId()
+      this.getCategoryName();
 
     },
     async erasePublication(){
@@ -58,6 +74,14 @@ export default {
     this.$router.push('/publications/');
 
     },  
+     getCategoryName(){
+      let result = this.categoriesList.filter((cat)=> cat.category_id == this.publication.category_id)
+      console.log(result[0].name)
+      this.nameCat = result[0].name
+    },
+  
+
+      
 
     
   }
