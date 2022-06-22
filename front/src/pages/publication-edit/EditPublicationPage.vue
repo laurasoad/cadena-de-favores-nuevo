@@ -1,6 +1,6 @@
 <template>
 
-<section>
+<section class="editpublication">
   <h1>Editar Publicación</h1>
 
   <form>
@@ -20,8 +20,15 @@
     <label for="creation_date">Fecha de creación:</label>
     <input type="text" id="creation_date" v-model="modifiedPublication.date" disabled/>
 
-    <label for="categories">Categorías:</label>
-    <input type="text" id="categories" v-model="modifiedPublication.categories"/>
+    <label for="cat">Categoría:</label>
+    <select id="cat" v-model="modifiedPublication.category_id">
+      <!-- 
+        <option>Selecciona una categoría</option>
+      -->
+      <option v-for="category in categoriesList" :value="category.category_id" :key="category.category_id">
+                {{ category.name}} 
+    </option>
+    </select>
     
     <button @click.prevent="changePublication">Editar Publicación</button>
   </form>
@@ -40,7 +47,12 @@ export default {
         return {
             publication: {},
             modifiedPublication:{},
-            activeUser : JSON.parse(localStorage.getItem("activeUserWatcher"))
+            activeUser : JSON.parse(localStorage.getItem("activeUserWatcher")),
+            categoriesList:[
+            {"category_id":"CAT_GENERAL", "name":"General"}, // añadir imágenes
+            {"category_id":"CAT_EDUCATION", "name":"Educación"},
+            {"category_id":"CAT_MUSIC", "name":"Música"},
+            {"category_id":"CAT_HEALTH", "name":"Salud"}], 
         }
     }, 
     mounted() {
@@ -55,6 +67,7 @@ export default {
       // 1 - Cuando se carga la página: Para mostrar los datos de la publicación
       // 2 - Para comprobar si el usuario ha editado algo:
       //     comparando los datos de  "publication" y modifiedPublication"
+      console.log(this.publication)
 
       this.modifiedPublication.id_pub = this.publication.id_pub;
       this.modifiedPublication.user_id = this.publication.user_id; // anadido user_id a clase Publication
@@ -63,7 +76,8 @@ export default {
       this.modifiedPublication.description = this.publication.description;
       this.modifiedPublication.location = this.publication.location;
       this.modifiedPublication.date = this.publication.date;
-      this.modifiedPublication.categories = this.publication.categories;
+      this.modifiedPublication.category_id = this.publication.category_id;
+      this.modifiedPublication.tags = this.publication.tags;
       // añadido (añadiendo usuarios con local Storage)
       console.log("hola desde editar pub")
       console.log("usuario que creo pub: ", this.publication.user_id);
@@ -76,7 +90,8 @@ export default {
       return (
         this.modifiedPublication.title === "" ||
         this.modifiedPublication.description === "" ||
-        this.modifiedPublication.location === ""
+        this.modifiedPublication.location === "" ||
+        this.modifiedPublication.category_id === ""
       );
     },
 
@@ -85,7 +100,7 @@ export default {
           this.publication.title != this.modifiedPublication.title ||
           this.publication.description != this.modifiedPublication.description ||
           this.publication.location != this.modifiedPublication.location ||
-          this.publication.categories != this.modifiedPublication.categories
+          this.publication.category_id != this.modifiedPublication.category_id.category_id
         );
       },
 
@@ -95,7 +110,7 @@ export default {
 
         }else {
           if(this.isModified()){
-            console.log(this.modifiedPublication)
+            console.log("-->",this.modifiedPublication)
             if (confirm("¿Está seguro de que quiere editar la publicación?")) {
               await editPublication(this.modifiedPublication);
              
@@ -120,6 +135,22 @@ export default {
 </script>
 
 <style scoped>
+.editpublication {
+  background-color: #fbfbfb; 
+  border: 1px solid #fbfbfb;
+  box-sizing: border-box;
+  border-radius: 0.5em;
+}
+select {
+  background-color: #fbfbfb; 
+  width: 90%; 
+  height: 2.5em; 
+  min-width: 20em;
+  border: 1px solid #04AA6D;
+  border-radius: 5px;  
+  box-sizing:border-box;
+
+}
 section {
   display: flex;
   flex-direction: column;
