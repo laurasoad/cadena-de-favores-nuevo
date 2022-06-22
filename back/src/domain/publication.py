@@ -282,3 +282,15 @@ class PublicationRepository:
             publications_list.append(publication)
 
         return publications_list
+
+    def get_all_categories_id(self):
+        sql = """SELECT DISTINCT category_id FROM publications"""
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql)
+
+        data = cursor.fetchall()
+
+        results = [tuple(row) for row in data]
+        # lista de listas [["CAT_EDUCATION"], ["CAT_SOCIAL_SERVICES"], ["CAT_JOBS"]]
+        return results

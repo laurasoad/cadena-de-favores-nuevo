@@ -1,4 +1,5 @@
-from flask import Flask, request
+from json import dumps
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from src.domain.publication import Publication
@@ -39,9 +40,7 @@ def create_app(repositories):
         )
 
         repositories["publications"].save(newPublication)
-        repositories["publications"].save_publication_tags(
-            newPublication.id_pub, newPublication.tags
-        )
+        repositories["publications"].save_publication_tags(body["id_pub"], body["tags"])
         return "", 200
 
     @app.route("/api/publications/<id>", methods=["GET"])
@@ -121,18 +120,17 @@ def create_app(repositories):
         users = repositories["users"].get_all()
         return object_to_json(users)
 
-    @app.route("/api/users", methods=["POST"])
-    def users_save():
-        body = request.json
-        oneUser = User(**body)
-        users = repositories["users"].save(oneUser)
-        return "", 200
-
     @app.route("/api/users/<id>", methods=["GET"])
     def users_get_by_id(id):
         users = repositories["users"].get_by_id(id)
         return object_to_json(users)
 
+    # @app.route("/api/users", methods=["POST"])
+    # def users_save():
+    #     body = request.json
+    #     oneUser = User(**body)
+    #     users = repositories["users"].save(oneUser)
+    #     return "", 200
     @app.route("/api/users", methods=["POST"])
     def user_save_new(id):
         # No Auth
@@ -154,5 +152,11 @@ def create_app(repositories):
             "publications"
         ].search_publications_by_user_id(id)
         return object_to_json(user_publication_list), 200
+
+    @app.route("/api/categories", methods=["GET"])
+    def categories_get_all():
+
+        categories_id_list = repositories["publications"].get_all_categories_id()
+        return dumps(categories_id_list), 200
 
     return app
