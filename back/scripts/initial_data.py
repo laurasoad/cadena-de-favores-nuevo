@@ -80,11 +80,11 @@ def main():
             id_pub="3",
             user_id="user-3",
             publication_type=1,
-            title="Ofrezco clases de guitarra",
-            description="¿Te apetece iniciarte en el mundo de la guitarra? háblame!",
+            title="Ofrezco clases de piano",
+            description="¿Te apetece iniciarte en el mundo de la música? háblame!",
             date="2022-03-28",
             location="Online",
-            category_id="CAT_EDUCATION",
+            category_id="CAT_MUSIC",
             tags=[],
         )
     )
@@ -98,7 +98,7 @@ def main():
             description="bla bla bla",
             date="2022-03-29",
             location="Donosti",
-            category_id="CAT_SOCIAL_SERVICES",  # CAMBIAR
+            category_id="CAT_GENERAL",  # CAMBIAR
             tags=[],
         )
     )
@@ -111,7 +111,7 @@ def main():
             description="Creo que tiene el tambor estropeado",
             date="2022-06-11",
             location="Getxo",
-            category_id="CAT_JOBS",  # CAMBIAR
+            category_id="CAT_GENERAL",  # CAMBIAR
             tags=[],
         )
     )
@@ -129,15 +129,16 @@ def main():
         )
     )
 
-    tag_repository.save(Tag(tag_id=1, name="#lavadora"))
-    tag_repository.save(Tag(2, "#online"))
-    tag_repository.save(Tag(3, "#mates"))
-    tag_repository.save(Tag(4, name="#clases"))
-    tag_repository.save(Tag(5, name="#musica"))
+    tag_repository.save(Tag(tag_id=1, name="#clases"))
+    tag_repository.save(Tag(2, "#mates"))
+    tag_repository.save(Tag(3, "#online"))
+    tag_repository.save(Tag(4, name="#piano"))
+    # tag_repository.save(Tag(5, name="#lavadora"))
 
     # Agregamos etiquetas a las publicaciones
-    pub_repository.save_publication_tags("1", [2, 3, 4])
-    pub_repository.save_publication_tags("2", [2, 3, 4])
+    pub_repository.save_publication_tags("1", [1, 2, 3])
+    pub_repository.save_publication_tags("2", [1, 2, 3])
+    pub_repository.save_publication_tags("3", [1, 3, 4])
 
 
 if __name__ == "__main__":
