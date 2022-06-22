@@ -3,8 +3,9 @@
 
       <section>
         <h4>{{ publication.title }}</h4>
-        <p> Categoría: {{ publication.categories }}</p>
+        <p> Categoría: {{ this.publication.category_id}}</p>
         <p>Lugar: {{ publication.location }}</p>
+        
       </section>
 
       <button @click="goToDetailsClicked">
@@ -26,10 +27,30 @@ export default {
   data() {
       return {
         seekHelpStyle: false,
-        offerHelpStyle: false      }
+        offerHelpStyle: false,
+        categoriesList2:[
+          {"CAT_GENERAL":"General"}, // añadir imágenes
+          {"CAT_EDUCATION":"Educación"},
+          {"CAT_MUSIC":"Música"},
+          {"CAT_HEALTH":"Salud"}],      
+        categoriesList:[
+            {"category_id":"CAT_GENERAL", "name":"General"}, // añadir imágenes
+            {"category_id":"CAT_EDUCATION", "name":"Educación"},
+            {"category_id":"CAT_MUSIC", "name":"Música"},
+            {"category_id":"CAT_HEALTH", "name":"Salud"}],
+        nameCat: ""
+    }
     },
+    computed: {
+      gettingCategoryName() { // No funciona
+      let catId = this.publication.category_id
+      return this.categoriesList[catId]
+  },
+
+  },
     mounted() {
-      this.loadStyles()
+      this.loadStyles();
+      //this.getCategoryName();
     },
     methods: {
       loadStyles() {
@@ -43,7 +64,15 @@ export default {
       goToDetailsClicked() { 
       console.log("---> onGoToDetailsClicked()")
       this.$router.push({ name: 'PublicationDetail', params: { id: `${this.publication.id_pub}`} } )
-      }
+      },
+      /**
+       * 
+      getCategoryName(){ // No funciona
+      let result = this.categoriesList.filter((cat)=> cat.category_id == this.publication.category_id)
+      console.log(result[0].name)
+      this.nameCat = result[0].name
+    },
+       */
     },
 };
 </script>
