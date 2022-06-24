@@ -132,7 +132,7 @@ def create_app(repositories):
     #     users = repositories["users"].save(oneUser)
     #     return "", 200
     @app.route("/api/users", methods=["POST"])
-    def user_save_new(id):
+    def user_save_new():
         # No Auth
         body = request.json
         newUser = User(
