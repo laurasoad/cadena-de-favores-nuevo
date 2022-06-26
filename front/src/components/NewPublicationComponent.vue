@@ -67,7 +67,7 @@ export default {
               {"category_id":"CAT_EDUCATION", "name":"Educación"},
               {"category_id":"CAT_MUSIC", "name":"Música"},
               {"category_id":"CAT_HEALTH", "name":"Salud"}],
-            selectedCategory: {},
+            selectedCategory: undefined,
             tagsList: [
               {"tag_id":1, "name":'#clases', isSelected: false},
               {"tag_id":2, "name":'#mates', isSelected: false },
@@ -106,7 +106,7 @@ export default {
         this.pubInForm.title == undefined ||
         this.pubInForm.description == undefined ||
         this.pubInForm.location == undefined ||
-        this.selectedCategory == {}//añadido
+        this.selectedCategory == undefined//añadido
         );
       },
 
@@ -121,7 +121,7 @@ export default {
             let today = new Date()
             today = today.toISOString().slice(0,10)
             this.pubInForm.date = today
-            console.log(this.selectedCategory)
+            console.log("selectedCategory -->", this.selectedCategory)
              this.pubInForm.category_id = this.selectedCategory["category_id"]
              this.pubInForm.tags = this.storagingSelectedTags
 
