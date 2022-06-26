@@ -1,20 +1,21 @@
 <template>
   <div class="container">
-    <section class="wrap-search">
+    <section class="wrap-filters">
+      <select class="type-filter" v-model="selectedType">
+          <option disabled>Filtrar por tipo de publicación</option>
+          <option v-for="item in publicationTypeList" :value="item.type" :key="item.type">{{ item.name}}</option> 
+      </select>
+      <select class="category-filter" v-model="selectedCategory">
+          <option disabled>Filtrar por categoría</option>
+          <option v-for="category in categoriesList" :value="category.category_id" :key="category.category_id">{{ category.name}}</option>
+      </select>
       <input id="search" type="search" placeholder="Busca un título, descripción o lugar" v-model="textSearched"/>
     </section>
-    <select v-model="selectedCategory">
-      <option disabled>Filtrar por categoría</option>
-      <option v-for="category in categoriesList" :value="category.category_id" :key="category.category_id">
-                {{ category.name}} 
-      </option>
-    </select>
-     <select v-model="selectedType">
-      <option disabled>Filtrar por tipo de publicación</option>
-      <option v-for="item in publicationTypeList" :value="item.type" :key="item.type">
-                {{ item.name}} 
-      </option>
-    </select>
+   <!--(value, key, index) in objtect pra VFOR-->
+     <select v-model="selectedTagsDict" multiple>
+    <option disabled>All tags</option>
+    <option v-for="tag in tagsList" :key="tag.id" :value="(tag.id)">{{ tag.name }}</option>
+</select>
       <br>
      <section class="publication-list">
       <PublicationItem  v-for=" publication in filteredList" :key="publication.id_pub" 
@@ -27,6 +28,10 @@
   // mejora: import { getPublications } from '@/services/api.js'
   import PublicationItem from "./PublicationItem.vue";
   import { getPublications } from "@/services/api.js";
+  //import collect from "collect.js";
+  // import collect from "collect.js";
+
+
 
 
 
@@ -51,7 +56,13 @@
               {"type": "1", "name":"Ofrecer ayuda"}, 
               {"type": "2", "name":"Todos los tipos"}],
         selectedCategory: '',
-        selectedType: ''
+        selectedType: '',
+        tagsList:[
+              {"id": "1", "name":'#clases'}, 
+              {"id": "2", "name":'#mates'}, 
+              {"id": "3", "name":'#online'},
+             {"id": "4", "name":'#piano'}],
+        selectedTagsDict: ""
       
       }
     },
@@ -63,8 +74,11 @@
           let result = this.publicationList.filter((item)=> this.isFilteredByText(item))
                             .filter((item)=> this.isFilteredByCategory(item))
                             .filter((item)=> this.isFilteredByType(item))
+                            .filter((item) => this.isFilteredByTags(item) )
           return result
-      }
+      },
+
+      
     },
     methods: {
       async loadData() {
@@ -93,7 +107,7 @@
             console.log("item ",  item.publication_type )               
             console.log(item.publication_type == this.selectedType)
             
-            if (this.selectedType == ""){ 
+            if (this.selectedType == "" ){ 
                 return true
             }
             if (this.selectedType.includes("2")){
@@ -102,31 +116,73 @@
                 return this.selectedType.includes(item.publication_type) 
             }
             
+        },
+        /**
+         isFilteredByMatchSuitability(item) {
+            console.log("selected ", this.selectedType)
+            console.log("item ",  item.publication_type )               
+            console.log(item.publication_type == this.selectedType)
+            // la publication_type tiene que ser el contrario busco -> ofrezo
+            if (this.selectedType == ""){ 
+                return true
+            }
+            if (this.selectedType.includes("2")){
+                return true
+            } else{
+                return this.selectedType.includes(item.publication_type) 
+            }
+                    },
+
+            
+      
+         */
+           
+            isFilteredByTags(item) {
+            console.log("selected tag dict --> ", this.selectedTagsDict)
+            console.log("item tags list ",  item.tags )    
+            let tagComparationList =[]           
+            for(let indexPub in item.tags){
+              console.log("TAG ", item.tags[indexPub])
+              console.log( item.tags[indexPub] == parseInt(this.selectedTagsDict[0]) )
+              console.log("one tag of pub: ",  item.tags[indexPub])
+            // Si no se filtra por tag, devuelve todas las publicaciones
+                 if ( this.selectedTagsDict == ""){ 
+                return true
+                }
+            for (let index in this.selectedTagsDict){
+              console.log("tagObj ")
+               if (parseInt(this.selectedTagsDict[index]) ==  item.tags[indexPub]){ 
+                tagComparationList.push( item.tags[indexPub])
+            }
+
+            }
+               
+            /**
+             *   if (parseInt(this.selectedTagsDict[0]) ==  item.tags[indexPub]){ 
+                tagComparationList.push( item.tags[indexPub])
+            }
+                  if (parseInt(this.selectedTagsDict[1]) ==  item.tags[indexPub]){ 
+                tagComparationList.push( item.tags[indexPub])
+            }
+            
+             */
+            
+               // return (parseInt(this.selectedTagsDict[0]) == tag)
+        
+            }
+           
+
+            console.log(" HOOLA tagComparationList ", tagComparationList)
+                        console.log("selectedTagsDict LIIIST ", this.selectedTagsDict)
+
+
+            return tagComparationList.length >= this.selectedTagsDict.length
+            
+        
+            
+            
         }
     }}
-  
-
-   /**
-    * 
-    * 
-      return this.publicationList.filter((element) => {(element.title.toLowerCase().includes(this.textSearched.toLowerCase()))
-                                                   ||(element.description.toLowerCase().includes(this.textSearched.toLowerCase())) }  )
-    
-             filteredList(){
-          this.publicationList.filter((element) => {
-             let isTitleIncluded = element.title.toLowerCase().includes(this.textSearched.toLowerCase())
-             let isDescriptionIncluded = element.title.toLowerCase().includes(this.textSearched.toLowerCase())
-             return isTitleIncluded || isDescriptionIncluded
-             })
-
-        }
-          
-            */
-          
-      
-   //   const results = people.filter(element => {
-  // 👇️ using AND (&&) operator
- // return element.age === 30 && element.name === 'Carl';
 </script>
 
 <style scoped>
@@ -134,14 +190,29 @@
   body {
     margin: 0 auto;
     font-family: 'Nunito Sans';
-    background-color: #f2f2f2;
-    }
+    background-image: #f2f2f2;
 
+
+      box-sizing: border-box;
+    }
+    .wrap-filters {
+      display: flex;
+      box-sizing: border-box;
+    }
+    .wrap-filters select {
+      box-sizing: border-box;
+      height: 3.3em; 
+      border-radius: 5px;  
+      font-size: 1rem;
+    }
+   
     #search{
+      box-sizing: border-box;
+
       background-color: #fbfbfb; 
       width: 75%; 
 
-      height: 2.5em; 
+      height: 3.9em; 
       border: 1px solid black;
       border-radius: 5px;  
       padding-left: 0.1em;
