@@ -93,7 +93,10 @@ export default {
   .offer {
     --main-offer-color:  rgb(90, 104, 212);
     color:   var(--main-offer-color);
+    /**
+    
     border: 2px solid  var(--main-offer-color);
+    ; */
   }
 
   
@@ -125,13 +128,17 @@ export default {
 
   .seek {
     color: -main-seek-color;
+    /**
     border: 2px solid -main-seek-color;
+    
+    */ 
   }
   .seek:hover {
     box-shadow: 0 8px 16px 0 rgba(182, 17, 17, 0.2);
   }
 
   .seek button {
+
     border: 2px solid  rgb(212, 130, 48);
     background-color: white;
     padding: 14px 28px;
