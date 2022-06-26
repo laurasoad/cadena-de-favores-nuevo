@@ -12,6 +12,11 @@ const routes = [
     component: () => import('@/pages/about/AboutPage.vue'),
   },
   {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('@/pages/dashboard/Dashboard.vue'),
+  },
+  {
     path: '/publications',
     name: 'PublicationList',
     component: () => import('@/pages/publications-list/PublicationsListPage.vue'),
