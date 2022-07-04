@@ -13,13 +13,25 @@
     <router-link :to="`/publications/${publication.id_pub}/edit`">Editar</router-link>
     </button>
     <button  v-if="isThisUserTheOwnerOfPublication" @click="erasePublication">Borrar</button>
+     <br>
+    <button  v-if="isThisUserTheOwnerOfPublication" @click="matching">Match</button>
+    <section  class="match-list" v-show="isMatchClicked">
+    Hola Match
+      <PublicationItem v-for=" publication in filteredMatchList" :key="publication.id_pub" 
+      :publication="publication"/>
+    </section>
 </template>
 <script>
 
-import { getPublicationById, deletePublicationById, getUserId } from "@/services/api.js";
+import { getPublications, getPublicationById, deletePublicationById, getUserId } from "@/services/api.js";
+import PublicationItem from "../../components/PublicationItem.vue";
+
 
 export default {
   name: "PublicationDetail", 
+  components: {
+      PublicationItem
+    },
   data() {
     return {
       publication: {},
@@ -30,12 +42,15 @@ export default {
             {"category_id":"CAT_MUSIC", "name":"Música"},
             {"category_id":"CAT_HEALTH", "name":"Salud"}],
       nameCat: "",
-       tagsList: [
+      tagsList: [
               {id:1, "name": '#clases'},
               {id:2, "name": '#mates' },
               {id:3, "name": '#online' },
               {id:4, "name": '#piano'}],
+      publicationList: [],
+      isMatchClicked: false
     };
+   
   },
   computed: {
       isThisUserTheOwnerOfPublication() {
@@ -45,11 +60,19 @@ export default {
       }
       return false
   },
+  filteredMatchList(){
+          let result = this.publicationList.filter((item)=> this.isDifferentType(item))
+                            .filter((item) => this.hasTheSameCategory(item))
+                            .filter((item) => this.hasAtLeastTwoTagsInCommon(item) )
+
+          return result
+      },
 
   },
-  mounted() {
+    mounted() {
     this.loadData();
   },
+
   methods: {
     async loadData() {
       let publicationId = this.$route.params.id;
@@ -57,6 +80,10 @@ export default {
       // cargar id usuario activo
       this.activeUserId = getUserId()
       this.getCategoryName();
+      // cargar la lista de publicaciones para Match
+      this.publicationList = await getPublications();
+      console.log(this.publicationList)
+
 
     },
     async erasePublication(){
@@ -79,6 +106,46 @@ export default {
       console.log(result[0].name)
       this.nameCat = result[0].name
     },
+     isDifferentType(item) {
+          //  console.log("item of list) - publication type ",  item.publication_type )               
+          // Si la publicación detallada es del tipo 0 (buscar ayuda)
+            if (this.publication.publication_type  == 0){
+              // Devuelve las del tipo contrario (ofrecer ayuda, 1)
+                return item.publication_type == 1
+            } else{
+                return item.publication_type == 0 
+            }
+            
+    },
+    hasTheSameCategory(item) {
+          return item.category_id == this.publication.category_id
+     
+    },
+    hasAtLeastTwoTagsInCommon(item) {
+        let commonTagsList =[]           
+        for(let indexPub in item.tags){
+             // console.log("TAGs del item de la lista ", item.tags) 
+             // console.log("TAGs de la publicación detallada ", this.publication.tags) 
+
+             // console.log("TAG ", item.tags[indexPub]) 
+              
+            for (let index in this.publication.tags){
+               //   console.log("TAG item lista", item.tags[indexPub]) 
+              //  console.log("TAG pub detallada ", this.publication.tags[index]) 
+              //    console.log("match? ", this.publication.tags[index] ==  item.tags[indexPub])
+                  if (this.publication.tags[index] ==  item.tags[indexPub]){ 
+
+                        commonTagsList.push( item.tags[indexPub])
+                        console.log("commonTagsList", commonTagsList)
+                  }
+            }
+        }
+        return commonTagsList.length >= 2
+    },
+    matching(){
+            this.isMatchClicked = !this.isMatchClicked
+
+    }
   
 
       
