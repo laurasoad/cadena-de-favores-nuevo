@@ -39,18 +39,7 @@
     </section>
 
 
-  <input type="checkbox" id="btn-modal">
-	<label for="btn-modal" class="lbl-modal">Abrir Modal</label>
-	<div class="modal">
-    <div class="contenedor">
-      <header>¡Bienvenidos!</header>
-			<label for="btn-modal">X</label>
-			<div class="contenido">
-        <h3><!-- Agregar un titulo --></h3>
-				<p><!-- Agregar un mensaje --></p>
-			</div>
-		</div>
-	</div>
+
   
 </div>
 </template>
@@ -101,6 +90,7 @@ export default {
              console.log("cambio detectado desde home")
 
         localStorage.activeUserWatcher = JSON.stringify(newSelectedUser);
+      
       },
       deep: true
     }
@@ -128,8 +118,8 @@ export default {
 
       window.localStorage.setItem('activeUserWatcher', JSON.stringify(this.selectedUser))
       console.log("selectedUser HomePage: ", this.selectedUser)
-      
-      window.location.reload(true);
+    
+    window.location.reload(true);
      this.$router.push("/dashboard");
 
     },
@@ -180,14 +170,19 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,400&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 /*Còdigos universales de la pàgina*/
 * {
+  color: black;
+font-family: 'Lato', sans-serif;  /**
+	font-family: 'Open Sans', sans-serif;
+  
+  */
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Open Sans', sans-serif;;
 }
 /*Còdigo opcional - Fondo de la pàgina*/
 body {
@@ -217,56 +212,7 @@ body, .modal {
 	opacity: 1;
 	visibility: visible;
 } 
-.contenedor {
-	width: 400px;
-	height: 300px;
-	margin: auto;
-	background: #fff;
-	box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
-	transition: all 500ms ease;
-	position: relative;
-	transform: translateY(-30%);
-}
-#btn-modal:checked ~ .modal .contenedor {
-	transform: translateY(0%);
-} 
-.contenedor header {
-	padding: 10px;
-	background: #db8046;
-	color: #fff;
-}
-.contenedor label {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	color: #fff;
-	font-size: 15px;
-	cursor: pointer;
-}
-.contenido {
-	width: 100%;
-	padding: 10px; 
-}
-.contenido h3 {
-	margin-bottom: 10px;
-}
-.contenido p {
-	margin-bottom: 7px;
-}
-#btn-modal {
-	display: none;
-}
-.lbl-modal {
-	background: #fff;
-	padding: 10px 15px;
-	border-radius: 4px;
-	cursor: pointer;
-}
-@media only screen and (min-width:320px) and (max-width:768px) {
-	.contenedor{
-		width: 95%;
-	}
-}
+
 
 
 .container {
