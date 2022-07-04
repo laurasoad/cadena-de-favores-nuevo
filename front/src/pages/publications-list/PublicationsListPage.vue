@@ -25,11 +25,9 @@
 </template>
 
 <script>
-  // mejora: import { getPublications } from '@/services/api.js'
-  import PublicationItem from "./PublicationItem.vue";
+  import PublicationItem from "../../components/PublicationItem.vue";
   import { getPublications } from "@/services/api.js";
-  //import collect from "collect.js";
-  // import collect from "collect.js";
+
 
 
 
@@ -117,30 +115,12 @@
             }
             
         },
-        /**
-         isFilteredByMatchSuitability(item) {
-            console.log("selected ", this.selectedType)
-            console.log("item ",  item.publication_type )               
-            console.log(item.publication_type == this.selectedType)
-            // la publication_type tiene que ser el contrario busco -> ofrezo
-            if (this.selectedType == ""){ 
-                return true
-            }
-            if (this.selectedType.includes("2")){
-                return true
-            } else{
-                return this.selectedType.includes(item.publication_type) 
-            }
-                    },
-
-            
-      
-         */
+       
            
-            isFilteredByTags(item) {
+        isFilteredByTags(item) {
             console.log("selected tag dict --> ", this.selectedTagsDict)
             console.log("item tags list ",  item.tags )    
-            let tagComparationList =[]           
+            let commonTagsList =[]           
             for(let indexPub in item.tags){
               console.log("TAG ", item.tags[indexPub])
               console.log( item.tags[indexPub] == parseInt(this.selectedTagsDict[0]) )
@@ -149,38 +129,23 @@
                  if ( this.selectedTagsDict == ""){ 
                 return true
                 }
-            for (let index in this.selectedTagsDict){
-              console.log("tagObj ")
-               if (parseInt(this.selectedTagsDict[index]) ==  item.tags[indexPub]){ 
-                tagComparationList.push( item.tags[indexPub])
-            }
+                for (let index in this.selectedTagsDict){
+                  console.log("tagObj ")
+                      if (parseInt(this.selectedTagsDict[index]) ==  item.tags[indexPub]){ 
+                        commonTagsList.push( item.tags[indexPub])
+                    }
 
-            }
-               
-            /**
-             *   if (parseInt(this.selectedTagsDict[0]) ==  item.tags[indexPub]){ 
-                tagComparationList.push( item.tags[indexPub])
-            }
-                  if (parseInt(this.selectedTagsDict[1]) ==  item.tags[indexPub]){ 
-                tagComparationList.push( item.tags[indexPub])
-            }
-            
-             */
-            
-               // return (parseInt(this.selectedTagsDict[0]) == tag)
-        
+                } 
+             
             }
            
 
-            console.log(" HOOLA tagComparationList ", tagComparationList)
-                        console.log("selectedTagsDict LIIIST ", this.selectedTagsDict)
+            console.log(" HOOLA commonTagsList ", commonTagsList)
+            console.log("selectedTagsDict LIIIST ", this.selectedTagsDict)
 
 
-            return tagComparationList.length >= this.selectedTagsDict.length
-            
-        
-            
-            
+            return commonTagsList.length >= this.selectedTagsDict.length
+    
         }
     }}
 </script>
